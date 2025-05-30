@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import fs from "fs"
 
 const registerUser = asyncHandler( async(req , res)=>{
     const{username,email,fullname,password} = req.body
@@ -13,7 +14,7 @@ const registerUser = asyncHandler( async(req , res)=>{
     ){
         throw new ApiError(400,"full fielld are required")
     }
-    const existedUser = User.findOne(
+    const existedUser = await User.findOne(
     {
         $or:[{ username },{ email }]
     })
@@ -21,23 +22,33 @@ const registerUser = asyncHandler( async(req , res)=>{
     {
         throw new ApiError(409,"user with this userName / email is existed ")
     }
-    const avtarLocalPath = req.files?.avtar[0]?.path
-    const coverImagePath = req.files?.coverImage[0]?.path
-    console.log("avtarLocalPath",avtarLocalPath);
+    console.log("Avatar path:", req.files?.avatar?.[0]?.path);
+    console.log("File exists?", fs.existsSync(req.files?.avatar?.[0]?.path));
 
-    if(!avtarLocalPath){
-        throw new ApiError(400,"avtar is neseccery")
+    const avatarLocalPath = req.files?.avatar?.[0]?.path
+    const coverImagePath = req.files?.coverImage?.[0]?.path
+    console.log("avatarLocalPath",avatarLocalPath);
+
+    //extra
+    console.log("Avatar exists?", fs.existsSync(avatarLocalPath));
+
+    if(!avatarLocalPath){
+        throw new ApiError(400,"avatar is neseccery")
     }
     //upload on cloudnary
-    const avtar = await uploadOnCloudinary(avtarLocalPath)
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
     const coverImage = await uploadOnCloudinary(coverImagePath)
 
-    if(!avtar){
-        throw new ApiError(400,"avtar is neseccery")
+    // console.log("upload successfully");
+    console.log(req.files);
+    
+    
+    if(!avatar){
+        throw new ApiError(400,"avatar is neseccery")
     }
     const user = await User.create({
         fullname,
-        avtar: avtar.url,
+        avatar: avatar.url,
         coverImage:coverImage?.url || "",
         email,
         password,

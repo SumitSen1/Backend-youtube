@@ -1,8 +1,8 @@
 import{v2 as cloudinary} from "cloudinary"
 import fs from "fs"
-import dotenv from "dotenv"
+// import dotenv from "dotenv"
 
-    dotenv.config();
+//     dotenv.config();
 
     cloudinary.config({ 
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
@@ -18,9 +18,9 @@ const uploadOnCloudinary = async (localFilePath)=>{
             return null;
         }
         const response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: "auto",
-
+            resource_type: "auto"
         })
+        fs.unlinkSync(localFilePath);
 
         console.log("file is uploded in cloudinary",response.url);
         return response;
@@ -31,13 +31,13 @@ const uploadOnCloudinary = async (localFilePath)=>{
     }
 }
 export{uploadOnCloudinary}
-const uploadResult = await cloudinary.uploader.upload(
-    'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
-        public_id: 'shoes',
-        }
-    )
-    .catch((error) => {
-        console.log(error);
-    });
+// const uploadResult = await cloudinary.uploader.upload(
+//     'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', {
+//         public_id: 'shoes',
+//         }
+//     )
+//     .catch((error) => {
+//         console.log("error in uploading error ",error);
+//     });
     
-    console.log(uploadResult);
+    // console.log(uploadResult);
