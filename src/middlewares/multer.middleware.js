@@ -2,7 +2,8 @@ import multer from "multer"
 import fs from "fs"
 import path from "path"
 
-const uploadDir = path.join(process.cwd(),"..public/temp");
+const uploadDir = path.join(process.cwd(), "public", "temp");
+
 console.log(uploadDir);
 
 if(!fs.existsSync(uploadDir)){
