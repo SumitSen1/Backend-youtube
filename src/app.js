@@ -17,11 +17,11 @@ app.use(cookieParser())
 // route import
 import userRoute from "./routes/user.route.js"
 
-app.use((req, res, next) => {
-  console.log("Headers:", req.headers);
-  console.log("Files:", req.files);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("Headers:", req.headers);
+//   console.log("Files:", req.files);
+//   next();
+// });
 
 
 app.use(express.json());
