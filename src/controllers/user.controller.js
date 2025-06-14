@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
         {
             $or: [{ username }, { email }]
         })
+        new ApiResponse(200, "lkj", existedUser);
     if (existedUser) {
         throw new ApiError(409, "user with this userName / email is existed ")
     }
