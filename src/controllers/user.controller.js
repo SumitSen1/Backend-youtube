@@ -5,7 +5,6 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import fs from "fs"
 import jwt from "jsonwebtoken"
-import { channel, subscribe } from "diagnostics_channel";
 import mongoose from "mongoose";
 
 const generateRefreshAndAccessToken = async (userId) => {
@@ -56,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
     console.log("Avatar exists?", fs.existsSync(avatarLocalPath));
 
     if (!avatarLocalPath) {
-        throw new ApiError(400, "avatar is neseccery")
+        throw new ApiError(400, "avatar is neseccery01")
     }
     //upload on cloudnary
     const avatar = await uploadOnCloudinary(avatarLocalPath)
@@ -67,7 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
     if (!avatar) {
-        throw new ApiError(400, "avatar is neseccery")
+        throw new ApiError(400, "avatar is neseccery02")
     }
     const user = await User.create({
         fullname,
@@ -428,7 +427,6 @@ const getWatchHistory = asyncHandler(async(req,res)=>{
         )
     )
 })
-
 
 
 export {
